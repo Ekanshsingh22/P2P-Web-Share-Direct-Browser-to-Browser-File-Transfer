@@ -389,14 +389,7 @@ function App() {
 
       console.log("META SAVED");
 
-      console.log("SENDING REQUEST RESUME");
-
-      dataChannelRef.current.send(JSON.stringify({
-        type: 'request-resume',
-        lastChunkIndex: lastContiguousIndex
-      }));
-
-      console.log("REQUEST RESUME SENT"); 
+       
 
 
       // Receiver receives file metadata
