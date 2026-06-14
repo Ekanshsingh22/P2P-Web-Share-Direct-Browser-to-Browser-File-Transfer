@@ -285,10 +285,11 @@ function App() {
     // Create the DataChannel
     const dc = peerConnectionRef.current.createDataChannel('fileTransfer', {
       ordered: true,
-      maxRetransmits: 30
     });
     
     dc.binaryType = 'arraybuffer';
+    dc.bufferedAmountLowThreshold = 65536;
+
     dataChannelRef.current = dc;
     setupDataChannelHandlers(dc);
 
@@ -343,7 +344,7 @@ function App() {
   // DataChannel Message & State Handlers
   const setupDataChannelHandlers = (dc) => {
     dc.onopen = () => {
-      console.log('P2P Data Channel opened.');
+      console.log("DATA CHANNEL OPENED");
       setPeerConnected(true);
       setPeerStatus('Connected');
       
@@ -357,7 +358,7 @@ function App() {
     };
 
     dc.onclose = () => {
-      console.log('P2P Data Channel closed.');
+      console.log("DATA CHANNEL CLOSED");
       setPeerConnected(false);
       setPeerStatus('Disconnected');
       setIsTransferring(false);
