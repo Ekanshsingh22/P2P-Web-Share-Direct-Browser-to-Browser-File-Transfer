@@ -541,9 +541,19 @@ function App() {
       }
 
       // Calculate progress stats
-      const totalTransferred = Math.min(meta.size, (chunkIndex + 1) * CHUNK_SIZE);
-      setBytesTransferred(totalTransferred);
-      setProgress(Math.round((totalTransferred / meta.size) * 100));
+      const fileMeta = metaRef.current;
+
+      if (!fileMeta) {
+        console.log("META NOT READY");
+        return;
+      }
+
+      const totalTransferred =
+        Math.min(fileMeta.size, (chunkIndex + 1) * CHUNK_SIZE);
+
+      setProgress(
+        Math.round((totalTransferred / fileMeta.size) * 100)
+      );
       updateTransferStats(totalTransferred);
 
     } catch (err) {
