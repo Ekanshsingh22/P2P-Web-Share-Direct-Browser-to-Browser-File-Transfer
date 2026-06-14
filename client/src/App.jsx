@@ -546,7 +546,10 @@ function App() {
 
     } catch (err) {
       console.error('Binary payload processing error:', err);
-      showToast('error', 'Corrupted block discarded. Attempting auto-resume...');
+      if (!window.corruptionToastShown) {
+          window.corruptionToastShown = true;
+          showToast('error', 'Corrupted block discarded. Attempting auto-resume...');
+      }
     }
   };
 
