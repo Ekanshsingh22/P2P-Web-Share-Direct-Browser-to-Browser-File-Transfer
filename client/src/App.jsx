@@ -381,6 +381,22 @@ function App() {
   const handleControlMessage = async (msg) => {
     console.log("CONTROL MESSAGE RECEIVED:", msg);
     if (msg.type === 'meta') {
+      console.log("META RECEIVED");
+
+      await saveMeta(roomId, msg);
+
+      console.log("META SAVED");
+
+      console.log("SENDING REQUEST RESUME");
+
+      dataChannelRef.current.send(JSON.stringify({
+        type: 'request-resume',
+        lastChunkIndex: lastContiguousIndex
+      }));
+
+      console.log("REQUEST RESUME SENT"); 
+
+
       // Receiver receives file metadata
       setMeta(msg);
       await saveMeta(roomId, msg);
