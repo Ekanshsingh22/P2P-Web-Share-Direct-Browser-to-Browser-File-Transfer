@@ -25,7 +25,7 @@ import {
 } from './webrtc';
 import { saveChunk, getChunk, saveMeta, getMeta, clearRoom } from './db';
 
-const SIGNAL_SERVER = import.meta.env.VITE_SIGNAL_SERVER || 'http://localhost:5000';
+const SIGNAL_SERVER = import.meta.env.VITE_SIGNAL_SERVER || 'https://p2p-web-share-direct-browser-to-browser-xts1.onrender.com';
 
 function App() {
   // Navigation & Role states
