@@ -68,6 +68,7 @@ function App() {
   const transferStartRef = useRef(null);
   const lastProgressTimeRef = useRef(null);
   const lastProgressBytesRef = useRef(null);
+  const metaRef = useRef(null);
   
   // Active transfer state tracking (to allow stop/resume)
   const activeTransferRef = useRef({
@@ -394,6 +395,7 @@ function App() {
 
       // Receiver receives file metadata
       setMeta(msg);
+      metaRef.current = msg;
       await saveMeta(roomId, msg);
       
       // Determine if receiver has partially received chunks to support Auto-Resume
@@ -568,7 +570,7 @@ function App() {
 
       // Fallback IndexedDB assembly
       const chunks = [];
-      for (let i = 0; i < meta.totalChunks; i++) {
+      for (let i = 0; i < metaRef.current.totalChunks; i++) {
         const chunk = await getChunk(roomId, i);
         if (!chunk) {
           throw new Error(`Missing chunk ${i}. Cannot reassemble file.`);
@@ -576,18 +578,18 @@ function App() {
         chunks.push(chunk);
       }
 
-      const blob = new Blob(chunks, { type: meta.type || 'application/octet-stream' });
+      const blob = new Blob(chunks, { type: metaRef.current.type || 'application/octet-stream' });
       const downloadUrl = URL.createObjectURL(blob);
       
       // Trigger browser download
       const a = document.createElement('a');
       a.href = downloadUrl;
-      a.download = meta.name;
+      a.download = metaRef.current.name;
       a.target = '_blank';
 
       document.body.appendChild(a);
 
-      console.log("DOWNLOADING FILE:", meta.name);
+      console.log("DOWNLOADING FILE:", metaRef.current.name);
 
       setTimeout(() => {
         a.click();
@@ -610,7 +612,7 @@ function App() {
     if (!meta) return;
     try {
       const handle = await window.showSaveFilePicker({
-        suggestedName: meta.name
+        suggestedName: metaRef.current?.name || 'downloaded-file'
       });
       const writable = await handle.createWritable();
       setFileWritable(writable);
