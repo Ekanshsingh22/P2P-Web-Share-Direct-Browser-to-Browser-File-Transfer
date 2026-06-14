@@ -349,6 +349,7 @@ function App() {
       setPeerStatus('Connected');
       
       if (role === 'sender') {
+        console.log("SENDING META", meta);
         // Send metadata first
         dc.send(JSON.stringify({
           type: 'meta',
@@ -378,6 +379,7 @@ function App() {
 
   // Handler for control strings on data channel
   const handleControlMessage = async (msg) => {
+    console.log("CONTROL MESSAGE RECEIVED:", msg);
     if (msg.type === 'meta') {
       // Receiver receives file metadata
       setMeta(msg);
@@ -413,11 +415,12 @@ function App() {
       lastProgressBytesRef.current = lastContiguousIndex >= 0 ? (lastContiguousIndex + 1) * CHUNK_SIZE : 0;
 
     } else if (msg.type === 'request-resume') {
+      console.log("REQUEST RESUME RECEIVED", msg);
       // Sender receives resume index from receiver
       const startIdx = msg.lastChunkIndex + 1;
       showToast('info', startIdx > 0 ? `Resuming file transfer from chunk ${startIdx}...` : 'Starting file transfer...');
       setIsTransferring(true);
-      
+      console.log("RESUMING FILE TRANSFER FROM CHUNK", startIdx);
       activeTransferRef.current.currentChunk = startIdx;
       activeTransferRef.current.totalChunks = meta.totalChunks;
       activeTransferRef.current.isPaused = false;
