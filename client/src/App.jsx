@@ -583,6 +583,7 @@ function App() {
       
       // Trigger browser download
       const a = document.createElement('a');
+
       a.href = downloadUrl;
       a.download = metaRef.current.name;
       a.target = '_blank';
@@ -594,7 +595,7 @@ function App() {
       setTimeout(() => {
         a.click();
         document.body.removeChild(a);
-      }, 500);
+      }, 1000);
       
       URL.revokeObjectURL(downloadUrl);
       showToast('success', 'File downloaded successfully!');
