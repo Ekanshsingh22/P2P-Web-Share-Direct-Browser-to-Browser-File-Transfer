@@ -379,7 +379,9 @@ function App() {
 
   // Handler for control strings on data channel
   const handleControlMessage = async (msg) => {
-    console.log("CONTROL MESSAGE RECEIVED:", msg);
+    
+      console.log("CONTROL MESSAGE RECEIVED:", msg);
+      console.log("MESSAGE TYPE:", msg.type);
     if (msg.type === 'meta') {
       console.log("META RECEIVED");
 
