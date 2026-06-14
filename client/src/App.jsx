@@ -352,7 +352,7 @@ function App() {
         console.log("SENDING META", meta);
         // Send metadata first
         dc.send(JSON.stringify({
-          type: 'meta',
+          msgType: 'meta',
           ...meta
         }));
       }
@@ -382,7 +382,7 @@ function App() {
     
       console.log("CONTROL MESSAGE RECEIVED:", msg);
       console.log("MESSAGE TYPE:", msg.type);
-    if (msg.type === 'meta') {
+    if (msg.msgType === 'meta') {
       console.log("META RECEIVED");
 
       await saveMeta(roomId, msg);
