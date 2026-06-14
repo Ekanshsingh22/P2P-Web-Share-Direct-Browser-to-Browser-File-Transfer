@@ -555,6 +555,7 @@ function App() {
 
   // Reassemble chunks from IndexedDB and download
   const assembleFile = async () => {
+    console.log("ASSEMBLE FILE CALLED");
     try {
       if (useDirectDisk && fileWritable) {
         // Direct disk save completed, close the handle
@@ -582,9 +583,16 @@ function App() {
       const a = document.createElement('a');
       a.href = downloadUrl;
       a.download = meta.name;
+      a.target = '_blank';
+
       document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+
+      console.log("DOWNLOADING FILE:", meta.name);
+
+      setTimeout(() => {
+        a.click();
+        document.body.removeChild(a);
+      }, 500);
       
       URL.revokeObjectURL(downloadUrl);
       showToast('success', 'File downloaded successfully!');
